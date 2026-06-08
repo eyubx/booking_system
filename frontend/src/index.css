@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist-mono";
+@plugin "tailwind-debug";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -49,7 +50,7 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
+    --background: oklch(0.964 0 89.876);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
