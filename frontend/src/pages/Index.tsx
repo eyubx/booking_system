@@ -1,4 +1,5 @@
 import HeroAction from "@/components/HeroAction.tsx";
+import expert from "@/assets/expert.jpg"
 
 const Index = () => {
     return (
@@ -16,8 +17,8 @@ const Index = () => {
                         <HeroAction/>
                     </div>
                 </div>
-                <div className="w-full debug">
-                    <img className="rounded-2xl" src="../src/assets/expert.jpg"/>
+                <div className="w-full">
+                    <img alt="expert image" className="rounded-2xl shadow-lg" src={expert}/>
                 </div>
             </div>
         </section>
