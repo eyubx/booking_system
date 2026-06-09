@@ -1,11 +1,18 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, type ReactNode, useContext, useState} from "react";
 
-const AuthContext = createContext();
+interface AuthContextType {
+    token: string | null;
+    login: (jwt: string) => void;
+    logout: () => void;
+    isAuth: boolean;
+}
 
-export function AuthProvider({children}) {
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export function AuthProvider({children}: { children: ReactNode }) {
     const [token, setToken] = useState(localStorage.getItem("token"));
 
-    const login = (jwt) => {
+    const login = (jwt: string) => {
         localStorage.setItem("token", jwt);
         setToken(jwt);
     };
@@ -21,4 +28,8 @@ export function AuthProvider({children}) {
     );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+    const ctx = useContext(AuthContext);
+    if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+    return ctx;
+};
