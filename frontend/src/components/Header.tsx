@@ -7,7 +7,11 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-50 bg-background">
             <nav className="flex items-center">
-                <div className="flex lg:flex-2"><Link to={"/"}><img alt="Booking system" src={Logo}/></Link></div>
+                <div className="flex ml-12 lg:flex-2">
+                    <Link to={"/"}>
+                        <img className="h-16" alt="Booking system" src={Logo}/>
+                    </Link>
+                </div>
                 {/* mobile */}
                 <div className="flex lg:hidden"></div>
 
