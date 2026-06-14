@@ -41,4 +41,20 @@ public class UserService {
                 saved.getRole(), saved.getCreatedAt(), saved.getUpdatedAt()
         );
     }
+
+    public List<UserResponseDTO> createBulkUsers(List<UserRequestDTO> requests) {
+        return requests.stream().map(request -> {
+            User user = new User();
+            user.setUsername(request.username());
+            user.setEmail(request.email());
+            user.setPassword(passwordEncoder.encode(request.password()));
+            user.setRole(Role.USER);
+            User saved = userRepository.save(user);
+            return new UserResponseDTO(
+                    saved.getId(), saved.getUsername(), saved.getEmail(),
+                    saved.getRole(), saved.getCreatedAt(), saved.getUpdatedAt()
+            );
+        }).toList();
+    }
+
 }

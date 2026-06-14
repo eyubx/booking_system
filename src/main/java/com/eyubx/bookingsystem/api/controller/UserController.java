@@ -41,4 +41,10 @@ public class UserController {
     public boolean login(@Valid @RequestBody UserRequestDTO user) {
         return true;
     }
+
+    // for testing only
+    @PostMapping("/users/bulk")
+    public List<UserResponseDTO> bulk(@Valid @RequestBody List<UserRequestDTO> requests) {
+        return userService.createBulkUsers(requests);
+    }
 }
