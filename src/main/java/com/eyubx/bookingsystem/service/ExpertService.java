@@ -50,6 +50,8 @@ public class ExpertService {
             .setPhone(request.phone())
             .setUser(user)
             .setAvailableHours(List.of("09:00","10:00","11:00","14:00","15:00","16:00","17:00"));
+        if (request.email().isEmpty())
+            expert.setEmail(user.getEmail());
         Expert savedExpert = expertRepo.save(expert);
         return new ExpertResponseDTO(
             savedExpert.getId(),
@@ -119,6 +121,8 @@ public class ExpertService {
         if (request.userId() != null) {
             User user = userRepo.findById(request.userId()).orElseThrow(() -> new RuntimeException("User not found"));
             expert.setUser(user);
+            if (request.email() == null)
+                expert.setEmail(user.getEmail());
         }
         // TODO : when change to TimeSlot entity, add the condition here
         Expert savedExpert = expertRepo.save(expert);
