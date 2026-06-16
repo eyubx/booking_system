@@ -1,0 +1,25 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: BookingSystem
+    admin:
+      enabled: true
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/experts_db"
+    username: exp_user
+    password: "@@1223334444"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: public
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /index.html
