@@ -4,6 +4,7 @@ import com.eyubx.bookingsystem.api.dto.UserRequestDTO;
 import com.eyubx.bookingsystem.api.dto.UserResponseDTO;
 import com.eyubx.bookingsystem.entity.Role;
 import com.eyubx.bookingsystem.entity.User;
+import com.eyubx.bookingsystem.exception.AppException;
 import com.eyubx.bookingsystem.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,9 +28,8 @@ public class UserService {
     }
 
     public UserResponseDTO createAdmin(UserRequestDTO userDto) {
-        if (userRepository.count() > 0) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin already exists");
-        }
+        if (userRepository.count() > 0)
+            throw new AppException(HttpStatus.FORBIDDEN, "Admin already exists");
         User user = new User();
         user.setUsername(userDto.username());
         user.setEmail(userDto.email());
@@ -51,8 +51,12 @@ public class UserService {
             user.setRole(Role.USER);
             User saved = userRepository.save(user);
             return new UserResponseDTO(
-                    saved.getId(), saved.getUsername(), saved.getEmail(),
-                    saved.getRole(), saved.getCreatedAt(), saved.getUpdatedAt()
+                saved.getId(),
+                saved.getUsername(),
+                saved.getEmail(),
+                saved.getRole(),
+                saved.getCreatedAt(),
+                saved.getUpdatedAt()
             );
         }).toList();
     }

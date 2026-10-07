@@ -33,7 +33,7 @@ const Booking = () => {
                         <p>Expert of <b>{data?.expert_name}</b> as of {data!.date}. </p>
                         <p>Infos about you: </p>
                         <p>{data!.about_me}</p>
-                        <p>Informations about your expert: </p>
+                        <p>Information about your expert: </p>
                         <p>{data!.about_expert}</p>
                     </CardContent>
 

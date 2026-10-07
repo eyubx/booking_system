@@ -38,7 +38,8 @@ public class Expert extends BaseEntity {
     public Expert() { }
 
     public Expert setName(String name) {
-        this.name = name;
+        if (name != null)
+            this.name = name;
         return this;
     }
 
@@ -48,17 +49,20 @@ public class Expert extends BaseEntity {
     }
 
     public Expert setDescription(String description) {
-        this.description = description;
+        if (description != null)
+            this.description = description;
         return this;
     }
 
     public Expert setEmail(String email) {
-        this.email = email;
+        if (email != null)
+            this.email = email;
         return this;
     }
 
     public Expert setPhone(String phone) {
-        this.phone = phone;
+        if (phone != null)
+            this.phone = phone;
         return this;
     }
 
@@ -68,7 +72,8 @@ public class Expert extends BaseEntity {
     }
 
     public Expert setAvailableHours(List<String> availableHours) {
-        this.availableHours = availableHours;
+        if (!availableHours.isEmpty())
+            this.availableHours = availableHours;
         return this;
     }
 

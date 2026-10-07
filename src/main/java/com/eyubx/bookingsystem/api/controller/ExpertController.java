@@ -49,4 +49,10 @@ public class ExpertController {
     public ResponseEntity<ExpertResponseDTO> updateExpert(@PathVariable Long id, @RequestBody ExpertRequestDTO request) {
         return ResponseEntity.ok(expertService.updateExpert(id, request));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ExpertResponseDTO> deleteExpert(@PathVariable Long id) {
+        expertService.deleteExpert(id);
+        return  ResponseEntity.noContent().build();
+    }
 }

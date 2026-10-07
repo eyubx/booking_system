@@ -22,9 +22,11 @@ createRoot(document.getElementById("root")!).render(
                     <BrowserRouter>
                         <Routes>
                             <Route element={<MainLayout/>}>
-                                <Route path="/dashboard" element={<PrivateRoute>
-                                    <div>Hello</div>
-                                </PrivateRoute>}/>
+                                <Route path="/dashboard" element={
+                                    <PrivateRoute>
+                                        <div>Hello</div>
+                                    </PrivateRoute>
+                                }/>
                                 <Route path="/book/:expertId" element={<BookAppointment/>}/>
                                 <Route path="/booking/:id" element={<Booking/>}/>
                                 <Route path="/search" element={<SearchList/>}/>

@@ -3,11 +3,13 @@ package com.eyubx.bookingsystem.service;
 import com.eyubx.bookingsystem.api.dto.*;
 import com.eyubx.bookingsystem.entity.Expert;
 import com.eyubx.bookingsystem.entity.User;
+import com.eyubx.bookingsystem.exception.AppException;
 import com.eyubx.bookingsystem.repository.ExpertRepository;
 import com.eyubx.bookingsystem.repository.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class ExpertService {
 
     public ExpertResponseDTO createExpert(@Valid ExpertRequestDTO request) {
         User user = userRepo.findById(request.userId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND, "User not found"));
         Expert expert = new Expert();
         expert.setName(request.name()).setDescription(request.description())
             .setExpertise(request.expertise())
@@ -61,9 +63,9 @@ public class ExpertService {
                 savedExpert.getEmail(),
                 savedExpert.getPhone(),
                 new UserSummaryDTO(
-                        savedExpert.getUser().getId(),
-                        savedExpert.getUser().getUsername(),
-                        savedExpert.getUser().getEmail()
+                    savedExpert.getUser().getId(),
+                    savedExpert.getUser().getUsername(),
+                    savedExpert.getUser().getEmail()
                 ),
                 savedExpert.getAvailableHours()
         );
@@ -90,7 +92,7 @@ public class ExpertService {
     public ExpertResponseDTO getExpertById(Long id) {
         Optional<Expert> expert = expertRepo.findById(id);
         if (expert.isEmpty())
-            throw new RuntimeException("Expert not found");
+            throw new AppException(HttpStatus.NOT_FOUND, "Expert not found");
 
         return new ExpertResponseDTO(
             expert.get().getId(),
@@ -109,18 +111,17 @@ public class ExpertService {
     }
 
     public ExpertResponseDTO updateExpert(Long id, ExpertRequestDTO request) {
-        Expert expert = expertRepo.findById(id).orElseThrow(() -> new RuntimeException("Expert not found"));
-        if (request.name() != null)
-            expert.setName(request.name());
-        if (request.description() != null)
-            expert.setDescription(request.description());
-        if (request.email() != null)
-            expert.setEmail(request.email());
-        if (request.phone() != null)
-            expert.setPhone(request.phone());
+        Expert expert = expertRepo.findById(id).orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND, "Expert not found"));
+
+        expert.setName(request.name())
+            .setDescription(request.description())
+            .setEmail(request.email()).
+            setPhone(request.phone());
         if (request.userId() != null) {
-            User user = userRepo.findById(request.userId()).orElseThrow(() -> new RuntimeException("User not found"));
+            User user = userRepo.findById(request.userId()).orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND, "User not found"));
             expert.setUser(user);
+            if (request.name() == null)
+                expert.setName(user.getUsername());
             if (request.email() == null)
                 expert.setEmail(user.getEmail());
         }
@@ -140,5 +141,11 @@ public class ExpertService {
             ),
             savedExpert.getAvailableHours()
         );
+    }
+
+    public void deleteExpert(Long id) throws AppException {
+        if (!expertRepo.existsById(id))
+            throw new AppException(HttpStatus.NOT_FOUND, "Expert not found");
+        expertRepo.deleteById(id);
     }
 }
